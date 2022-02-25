@@ -1,0 +1,28 @@
+schema-version: 1.0
+
+type: builder
+
+in:
+  version: 3.19.4
+
+dependencies:
+  - autoconf
+  - automake
+  - libtool
+  - m4
+
+
+provision:
+  - url:
+      from: https://github.com/protocolbuffers/protobuf/archive/refs/tags/v{% version %}.tar.gz
+      todir: "{% xbeeSrc %}"
+
+build:
+  - shell:
+      cmds:
+        - ./autogen.sh
+        - ./configure --prefix=/usr
+        - make
+        - make install DESTDIR={% xbeeOut %}
+      directory: "{% xbeeSrc %}/protobuf-{% version %}"
+
